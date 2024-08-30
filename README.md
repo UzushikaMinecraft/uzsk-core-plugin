@@ -1,0 +1,1 @@
+# uzsk-core-plugin
