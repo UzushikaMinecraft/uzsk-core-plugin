@@ -1,0 +1,3 @@
+[submodule "uzsk-core-sql"]
+	path = uzsk-core-sql
+	url = https://github.com/UzushikaMinecraft/uzsk-core-sql
