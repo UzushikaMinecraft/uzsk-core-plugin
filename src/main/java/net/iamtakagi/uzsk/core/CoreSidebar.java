@@ -35,6 +35,7 @@ public class CoreSidebar {
         try {
             sidebars = new HashMap<>();
             scoreboard = ScoreboardLibrary.loadScoreboardLibrary(Core.getInstance());
+            Core.getInstance().getServer().getPluginManager().registerEvents(new CoreSidebarListener(), Core.getInstance());
         } catch (NoPacketAdapterAvailableException e) {
             scoreboard = new NoopScoreboardLibrary();
         }
@@ -162,7 +163,7 @@ public class CoreSidebar {
     }
 }
 
-class SidebarListener implements Listener {
+class CoreSidebarListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
       CoreSidebar sidebar = new CoreSidebar(event.getPlayer());

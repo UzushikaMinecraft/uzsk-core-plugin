@@ -31,7 +31,6 @@ public class Core extends JavaPlugin {
     this.getServer().getPluginManager().registerEvents(new ExperienceListener(), this);
     if (this.config.getSidebarSettings().isEnabled()) {
       CoreSidebar.init();
-      this.getServer().getPluginManager().registerEvents(new SidebarListener(), this);
     }
   }
 
