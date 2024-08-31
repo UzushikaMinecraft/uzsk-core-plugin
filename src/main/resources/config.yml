@@ -42,5 +42,14 @@ sidebar:
     world_date: MM/dd
     world_time: HH:mm
 
+bossbar:
+  enabled: true
+  bars:
+    - name: "Level"
+      content: "&r{LEVEL}Lv &r[{EXP_PROGRESS_BAR}&r] ({EXP_PERCENTAGE}%)"
+      color: PINK
+      overlay: PROGRESS
+      progress: 0.5
+
 webapi:
   endpoint_url: http://uszk_webapi:8080/api/
