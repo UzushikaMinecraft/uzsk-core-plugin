@@ -1,18 +1,10 @@
 package net.iamtakagi.uzsk.core;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.iamtakagi.uzsk.core.model.DaoFactory;
 import net.iamtakagi.uzsk.core.model.ProfileDao;
-import net.iamtakagi.uzsk.core.model.entity.Profile;
 
 public class Core extends JavaPlugin {
 
