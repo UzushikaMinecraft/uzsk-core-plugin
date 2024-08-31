@@ -29,6 +29,10 @@ public class Core extends JavaPlugin {
     this.profileDao = new DaoFactory(database).createProfileDao();
     this.getServer().getPluginManager().registerEvents(new GeneralListener(), this);
     this.getServer().getPluginManager().registerEvents(new ExperienceListener(), this);
+    if (this.config.getSidebarSettings().isEnabled()) {
+      CoreSidebar.init();
+      this.getServer().getPluginManager().registerEvents(new SidebarListener(), this);
+    }
   }
 
   @Override
