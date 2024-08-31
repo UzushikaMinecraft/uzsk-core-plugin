@@ -6,11 +6,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import io.papermc.paper.event.player.AsyncChatEvent;
 import net.iamtakagi.uzsk.core.model.ProfileDao;
 import net.iamtakagi.uzsk.core.model.entity.Profile;
 
@@ -48,7 +48,7 @@ class GeneralListener implements Listener {
         CorePlayer corePlayer = new CorePlayer(event.getPlayer().getUniqueId());
         corePlayer.init();
     }
-    
+
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         if(CorePlayer.getCorePlayers().containsKey(event.getPlayer().getUniqueId())) {
@@ -113,7 +113,7 @@ class ExperienceListener implements Listener {
     }
 
     @EventHandler
-    public void onChat(AsyncChatEvent event) {
+    public void onChat(AsyncPlayerChatEvent event) {
         ProfileDao profileDao = Core.getInstance().getProfileDao();
         CoreConfig config = Core.getInstance().getCoreConfig();
         Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
