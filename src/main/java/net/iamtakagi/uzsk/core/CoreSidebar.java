@@ -29,20 +29,13 @@ import net.megavex.scoreboardlibrary.api.sidebar.component.SidebarComponent;
 
 public class CoreSidebar {
     private static ScoreboardLibrary scoreboard;
-    private static Map<UUID, CoreSidebar> sidebars;
 
     public static void init() {
         try {
-            sidebars = new HashMap<>();
             scoreboard = ScoreboardLibrary.loadScoreboardLibrary(Core.getInstance());
-            Core.getInstance().getServer().getPluginManager().registerEvents(new CoreSidebarListener(), Core.getInstance());
         } catch (NoPacketAdapterAvailableException e) {
             scoreboard = new NoopScoreboardLibrary();
         }
-    }
-
-    public static Map<UUID, CoreSidebar> getSidebars() {
-        return sidebars;
     }
 
     private Player player;
@@ -162,17 +155,3 @@ public class CoreSidebar {
       return raw;
     }
 }
-
-class CoreSidebarListener implements Listener {
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-      CoreSidebar sidebar = new CoreSidebar(event.getPlayer());
-      sidebar.setup();
-      CoreSidebar.getSidebars().put(event.getPlayer().getUniqueId(), sidebar);
-    }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-      CoreSidebar.getSidebars().remove(event.getPlayer().getUniqueId());
-    }
-  }

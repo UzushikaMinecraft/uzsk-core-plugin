@@ -6,13 +6,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
 import net.iamtakagi.uzsk.core.model.ProfileDao;
 import net.iamtakagi.uzsk.core.model.entity.Profile;
 
 class GeneralListener implements Listener {
+
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
         ProfileDao profileDao = Core.getInstance().getProfileDao();
@@ -37,6 +40,19 @@ class GeneralListener implements Listener {
             }
             profile.setLastLoginDate(System.currentTimeMillis());
             profileDao.update(profile);
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        CorePlayer corePlayer = new CorePlayer(event.getPlayer().getUniqueId());
+        corePlayer.init();
+    }
+    
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        if(CorePlayer.getCorePlayers().containsKey(event.getPlayer().getUniqueId())) {
+            CorePlayer.getCorePlayers().remove(event.getPlayer().getUniqueId());
         }
     }
 }
@@ -80,7 +96,7 @@ class ExperienceListener implements Listener {
         if (event.getEntityType() == EntityType.PLAYER ||
                 event.getEntityType() == EntityType.ARMOR_STAND ||
                 event.getEntityType() == EntityType.ITEM_FRAME ||
-                event.getEntityType() == EntityType.LEASH_HITCH ||
+                event.getEntityType() == EntityType.LEASH_KNOT ||
                 event.getEntityType() == EntityType.PAINTING ||
                 event.getEntityType() == EntityType.VILLAGER) {
             return;
@@ -97,7 +113,7 @@ class ExperienceListener implements Listener {
     }
 
     @EventHandler
-    public void onChat(AsyncPlayerChatEvent event) {
+    public void onChat(AsyncChatEvent event) {
         ProfileDao profileDao = Core.getInstance().getProfileDao();
         CoreConfig config = Core.getInstance().getCoreConfig();
         Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
