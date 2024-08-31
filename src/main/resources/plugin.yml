@@ -1,0 +1,5 @@
+name: uzsk-core
+version: 1.0.0
+main: net.iamtakagi.uzsk.core.Core
+author: iamtakagi
+api-version: 1.20
