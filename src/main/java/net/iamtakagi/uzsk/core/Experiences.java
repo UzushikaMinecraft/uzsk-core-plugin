@@ -3,6 +3,8 @@ package net.iamtakagi.uzsk.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.md_5.bungee.api.ChatColor;
+
 public class Experiences {
 
     private static Map<Integer, Integer> LEVELING = new HashMap<>();
@@ -58,9 +60,9 @@ public class Experiences {
         int progress = (int) (getParcentage() * 100);
         for (int i = 0; i < 100; i++) {
             if (i < progress) {
-                sb.append("§a■");
+                sb.append(ChatColor.GREEN + "|");
             } else {
-                sb.append("§7■");
+                sb.append(ChatColor.GRAY + "|");
             }
         }
         return sb.toString();
