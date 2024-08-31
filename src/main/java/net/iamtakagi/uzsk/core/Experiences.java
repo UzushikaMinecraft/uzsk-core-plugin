@@ -48,4 +48,21 @@ public class Experiences {
     public double size() {
         return size;
     }
+
+    public double getParcentage() {
+        return size / getNeededExp();
+    }
+
+    public String getProgressBar () {
+        StringBuilder sb = new StringBuilder();
+        int progress = (int) (getParcentage() * 100);
+        for (int i = 0; i < 100; i++) {
+            if (i < progress) {
+                sb.append("§a■");
+            } else {
+                sb.append("§7■");
+            }
+        }
+        return sb.toString();
+    }
 }
