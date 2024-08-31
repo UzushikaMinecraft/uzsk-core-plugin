@@ -69,10 +69,10 @@ public class WebApi {
         return new ServerStatus(
             json.get("name").getAsString(),
             json.get("description").getAsString(),
-            json.get("isOnline").getAsBoolean(),
-            json.get("onlinePlayers").getAsInt(),
-            json.get("maxPlayers").getAsInt(),
-            gson.fromJson(json.get("playersSample").getAsJsonArray(), String[].class)
+            json.get("is_online").getAsBoolean(),
+            json.get("online_players").getAsInt(),
+            json.get("max_players").getAsInt(),
+            gson.fromJson(json.get("players_sample").getAsJsonArray(), String[].class)
         );
     }
 }
