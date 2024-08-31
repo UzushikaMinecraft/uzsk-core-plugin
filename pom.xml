@@ -2,8 +2,8 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.github.iamtakagi</groupId>
-  <artifactId>Lobby</artifactId>
+  <groupId>net.iamtakagi.uszk</groupId>
+  <artifactId>Core</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
@@ -96,6 +96,46 @@
       <artifactId>mysql-connector-j</artifactId>
       <version>9.0.0</version>
       </dependency>
+      <dependency>
+      <groupId>net.megavex</groupId>
+      <artifactId>scoreboard-library-api</artifactId>
+      <version>2.1.12</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.megavex</groupId>
+      <artifactId>scoreboard-library-implementation</artifactId>
+      <version>2.1.12</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.megavex</groupId>
+      <artifactId>scoreboard-library-modern</artifactId>
+      <version>2.1.12</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.megavex</groupId>
+      <artifactId>scoreboard-library-packetevents</artifactId>
+      <version>2.1.12</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.kyori</groupId>
+      <artifactId>adventure-platform-bukkit</artifactId>
+      <version>4.0.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>3.7.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.11.0</version>
+    </dependency>
   </dependencies>
 
 </project>
