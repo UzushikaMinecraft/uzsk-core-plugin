@@ -1,4 +1,4 @@
-name: uzsk-core
+name: Core
 version: 1.0.0
 main: net.iamtakagi.uzsk.core.Core
 author: iamtakagi
