@@ -21,7 +21,6 @@ public class Database {
        this.url = "jdbc:mysql://" + host + ":" + port + "/" + database;
        this.user = user;
        this.password = password;
-       connection = getConnection();
     }
 
     public Connection getConnection() {
