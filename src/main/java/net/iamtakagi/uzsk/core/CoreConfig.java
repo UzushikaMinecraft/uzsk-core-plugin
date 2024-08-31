@@ -4,16 +4,21 @@ import java.util.List;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import net.kyori.adventure.bossbar.BossBar.Color;
+import net.kyori.adventure.bossbar.BossBar.Overlay;
+
 public class CoreConfig {
     private DatabaseSettings databaseSettings;
     private ExperienceSettings experienceSettings;
     private SidebarSettings sidebarSettings;
+    private BossbarSettings bossbarSettings;
     private WebApiSettings webApiSettings;
 
     public CoreConfig(YamlConfiguration yaml) {
         this.databaseSettings = new DatabaseSettings(yaml);
         this.experienceSettings = new ExperienceSettings(yaml);
         this.sidebarSettings = new SidebarSettings(yaml);
+        this.bossbarSettings = new BossbarSettings(yaml);
         this.webApiSettings = new WebApiSettings(yaml);
     }
 
@@ -27,6 +32,10 @@ public class CoreConfig {
 
     public SidebarSettings getSidebarSettings() {
         return sidebarSettings;
+    }
+
+    public BossbarSettings getBossbarSettings() {
+        return bossbarSettings;
     }
 
     public WebApiSettings getWebApiSettings() {
@@ -161,6 +170,62 @@ public class CoreConfig {
 
             public String getWorldTimePattern() {
                 return this.worldTimePattern;
+            }
+        }
+    }
+
+    class BossbarSettings {
+        private boolean enabled;
+        private List<BossbarDetailSettings> bossbarDetailSettings;
+
+        public BossbarSettings(YamlConfiguration yaml) {
+            this.enabled = yaml.getBoolean("bossbar.enabled");
+            this.bossbarDetailSettings = yaml.getStringList("bossbar.bars").stream()
+                    .map(detail -> new BossbarDetailSettings((YamlConfiguration) yaml.get(detail)))
+                    .toList();
+        }
+
+        public boolean isEnabled() {
+            return this.enabled;
+        }
+
+        public List<BossbarDetailSettings> getBossbarDetailSettings() {
+            return this.bossbarDetailSettings;
+        }
+
+        class BossbarDetailSettings {
+            private String name;
+            private String content;
+            private Color color;
+            private Overlay overlay;
+            private float progress;
+
+            public BossbarDetailSettings(YamlConfiguration yaml) {
+                this.name = yaml.getString("bossbar.name");
+                this.content = yaml.getString("bossbar.content");
+                this.color = Color.valueOf(yaml.getString("bossbar.color"));
+                this.overlay = Overlay.valueOf(yaml.getString("bossbar.overlay"));
+                this.progress = (float) yaml.getDouble("bossbar.progress");
+            }
+
+            public String getName() {
+                return this.name;
+            }
+
+            public String getContent() {
+                return this.content;
+            }
+
+            public Color getColor() {
+                return this.color;
+            }
+
+            public Overlay getOverlay() {
+                return this.overlay;
+            }
+
+            public float getProgress() {
+                return this.progress;
             }
         }
     }
