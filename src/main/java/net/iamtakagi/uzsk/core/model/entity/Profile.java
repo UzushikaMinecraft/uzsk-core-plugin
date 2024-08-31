@@ -3,6 +3,8 @@ package net.iamtakagi.uzsk.core.model.entity;
 import java.io.Serializable;
 import java.util.UUID;
 
+import net.iamtakagi.uzsk.core.Experiences;
+
 public class Profile implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -12,7 +14,7 @@ public class Profile implements Serializable {
 	private long initialLoginDate;
 	private long lastLoginDate;
 	private long playTime;
-	private double experiences;
+	private Experiences experiences;
 	private int currency;
 	private int totalBuildBlocks;
 	private int totalDestroyBlocks;
@@ -24,7 +26,7 @@ public class Profile implements Serializable {
 		this.initialLoginDate = initialLoginDate;
 		this.lastLoginDate = lastLoginDate;
 		this.playTime = playTime;
-		this.experiences = experiences;
+		this.experiences = new Experiences(experiences);
 		this.currency = currency;
 		this.totalBuildBlocks = totalBuildBlocks;
 		this.totalDestroyBlocks = totalDestroyBlocks;
@@ -71,11 +73,11 @@ public class Profile implements Serializable {
 		this.playTime = playTime;
 	}
 
-	public double getExperiences() {
+	public Experiences getExperiences() {
 		return experiences;
 	}
 
-	public void setExperiences(double experiences) {
+	public void setExperiences(Experiences experiences) {
 		this.experiences = experiences;
 	}
 

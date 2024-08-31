@@ -1,5 +1,7 @@
 package net.iamtakagi.uzsk.core;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import net.iamtakagi.uzsk.core.model.entity.Profile;

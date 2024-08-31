@@ -26,7 +26,7 @@ public class ProfileDaoImpl implements ProfileDao {
             preparedStmt.setTimestamp(2, new java.sql.Timestamp(profile.getInitialLoginDate()));
             preparedStmt.setTimestamp(3, new java.sql.Timestamp(profile.getLastLoginDate()));
             preparedStmt.setLong(4, profile.getPlayTime());
-            preparedStmt.setDouble(5, profile.getExperiences());
+            preparedStmt.setDouble(5, profile.getExperiences().size());
             preparedStmt.setInt(6, profile.getCurrency());
             preparedStmt.setInt(7, profile.getTotalBuildBlocks());
             preparedStmt.setInt(8, profile.getTotalDestroyBlocks());
@@ -44,7 +44,7 @@ public class ProfileDaoImpl implements ProfileDao {
             preparedStmt.setTimestamp(1, new java.sql.Timestamp(profile.getInitialLoginDate()));
             preparedStmt.setTimestamp(2, new java.sql.Timestamp(profile.getLastLoginDate()));
             preparedStmt.setLong(3, profile.getPlayTime());
-            preparedStmt.setDouble(4, profile.getExperiences());
+            preparedStmt.setDouble(4, profile.getExperiences().size());
             preparedStmt.setInt(5, profile.getCurrency());
             preparedStmt.setInt(6, profile.getTotalBuildBlocks());
             preparedStmt.setInt(7, profile.getTotalDestroyBlocks());

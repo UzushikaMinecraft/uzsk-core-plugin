@@ -32,7 +32,7 @@ class GeneralListener implements Listener {
             profileDao.insert(profile);
         } else {
             if (profile.getLastLoginDate() < System.currentTimeMillis() - 86400000) {
-                profile.setExperiences(profile.getExperiences() + (profile.getExperiences()
+                profile.getExperiences().set(profile.getExperiences().size() + (profile.getExperiences().size()
                         * config.getExperienceSettings().getOnLoginNetworkIncreasePercentage()));
             }
             profile.setLastLoginDate(System.currentTimeMillis());
@@ -47,8 +47,8 @@ class ExperienceListener implements Listener {
         ProfileDao profileDao = Core.getInstance().getProfileDao();
         CoreConfig config = Core.getInstance().getCoreConfig();
         Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
-        profile.setExperiences(profile.getExperiences()
-                + (profile.getExperiences() * config.getExperienceSettings().getOnBreakBlockIncreasePercentage()));
+        profile.getExperiences().set(profile.getExperiences().size()
+                + (profile.getExperiences().size() * config.getExperienceSettings().getOnBreakBlockIncreasePercentage()));
     }
 
     @EventHandler
@@ -56,8 +56,8 @@ class ExperienceListener implements Listener {
         ProfileDao profileDao = Core.getInstance().getProfileDao();
         CoreConfig config = Core.getInstance().getCoreConfig();
         Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
-        profile.setExperiences(profile.getExperiences()
-                + (profile.getExperiences() * config.getExperienceSettings().getOnPlaceBlockIncreasePercentage()));
+        profile.getExperiences().set(profile.getExperiences().size()
+                + (profile.getExperiences().size() * config.getExperienceSettings().getOnPlaceBlockIncreasePercentage()));
     }
 
     @EventHandler
@@ -73,8 +73,8 @@ class ExperienceListener implements Listener {
             return;
         }
         Profile profile = profileDao.findByUUID(event.getEntity().getKiller().getUniqueId());
-        profile.setExperiences(profile.getExperiences()
-                + (profile.getExperiences() * config.getExperienceSettings().getOnKillMobIncreasePercentage()));
+        profile.getExperiences().set(profile.getExperiences().size()
+                + (profile.getExperiences().size() * config.getExperienceSettings().getOnKillMobIncreasePercentage()));
     }
 
     @EventHandler
@@ -82,7 +82,7 @@ class ExperienceListener implements Listener {
         ProfileDao profileDao = Core.getInstance().getProfileDao();
         CoreConfig config = Core.getInstance().getCoreConfig();
         Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
-        profile.setExperiences(profile.getExperiences()
-                + (profile.getExperiences() * config.getExperienceSettings().getOnChatIncreasePercentage()));
+        profile.getExperiences().set(profile.getExperiences().size()
+                + (profile.getExperiences().size() * config.getExperienceSettings().getOnChatIncreasePercentage()));
     }
 }
