@@ -69,7 +69,8 @@ class CoreConfig {
       config.getDouble("experience.on_login_network_increase_percentage"),
       config.getDouble("experience.on_break_block_increase_percentage"),
       config.getDouble("experience.on_place_block_increase_percentage"),
-      config.getDouble("experience.on_kill_mob_increase_percentage")
+      config.getDouble("experience.on_kill_mob_increase_percentage"),
+      config.getDouble("experience.on_chat_increase_percentage")
     );
   }
 
@@ -122,12 +123,14 @@ class CoreConfig {
     private double onBreakBlockIncreasePercentage;
     private double onPlaceBlockIncreasePercentage;
     private double onKillMobIncreasePercentage;
+    private double onChatIncreasePercentage;
 
-    public ExperienceSettings(double onLoginNetworkIncreasePercentage, double onBreakBlockIncreasePercentage, double onPlaceBlockIncreasePercentage, double onKillMobIncreasePercentage) {
+    public ExperienceSettings(double onLoginNetworkIncreasePercentage, double onBreakBlockIncreasePercentage, double onPlaceBlockIncreasePercentage, double onKillMobIncreasePercentage, double onChatIncreasePercentage) {
       this.onLoginNetworkIncreasePercentage = onLoginNetworkIncreasePercentage;
       this.onBreakBlockIncreasePercentage = onBreakBlockIncreasePercentage;
       this.onPlaceBlockIncreasePercentage = onPlaceBlockIncreasePercentage;
       this.onKillMobIncreasePercentage = onKillMobIncreasePercentage;
+      this.onChatIncreasePercentage = onChatIncreasePercentage;
     }
 
     public double getOnLoginNetworkIncreasePercentage() {
@@ -144,6 +147,10 @@ class CoreConfig {
 
     public double getOnKillMobIncreasePercentage() {
       return onKillMobIncreasePercentage;
+    }
+
+    public double getOnChatIncreasePercentage() {
+      return onChatIncreasePercentage;
     }
   }
 }

@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
 import net.iamtakagi.uzsk.core.model.ProfileDao;
@@ -74,5 +75,14 @@ class ExperienceListener implements Listener {
         Profile profile = profileDao.findByUUID(event.getEntity().getKiller().getUniqueId());
         profile.setExperiences(profile.getExperiences()
                 + (profile.getExperiences() * config.getExperienceSettings().getOnKillMobIncreasePercentage()));
+    }
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent event) {
+        ProfileDao profileDao = Core.getInstance().getProfileDao();
+        CoreConfig config = Core.getInstance().getCoreConfig();
+        Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
+        profile.setExperiences(profile.getExperiences()
+                + (profile.getExperiences() * config.getExperienceSettings().getOnChatIncreasePercentage()));
     }
 }
