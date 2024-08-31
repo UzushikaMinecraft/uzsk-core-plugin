@@ -129,5 +129,14 @@ public class ProfileDaoImpl implements ProfileDao {
         }
         return null;
     }
+
+    @Override
+    public void upsert(Profile profile) {
+        if (findByUUID(profile.getUuid()) == null) {
+            insert(profile);
+        } else {
+            update(profile);
+        }
+    }
     
 }
