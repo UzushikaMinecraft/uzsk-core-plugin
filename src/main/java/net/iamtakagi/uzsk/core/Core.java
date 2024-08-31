@@ -1,15 +1,18 @@
 package net.iamtakagi.uzsk.core;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.iamtakagi.uzsk.core.model.DaoFactory;
 import net.iamtakagi.uzsk.core.model.ProfileDao;
+import net.iamtakagi.uzsk.core.model.entity.Profile;
 
 public class Core extends JavaPlugin {
 
@@ -32,6 +35,8 @@ public class Core extends JavaPlugin {
       this.config.getDatabaseSettings().getPassword()
     );
     this.profileDao = new DaoFactory(database).createProfileDao();
+    this.getServer().getPluginManager().registerEvents(new GeneralListener(), this);
+    this.getServer().getPluginManager().registerEvents(new ExperienceListener(), this);
   }
 
   @Override
@@ -53,26 +58,6 @@ public class Core extends JavaPlugin {
 
   private void loadConfig() {
     this.config = new CoreConfig((YamlConfiguration) this.getConfig());
-  }
-}
-
-class PlayerListener implements Listener {
-}
-
-class ExperienceListener implements Listener {
-  @EventHandler
-  public void onBreak(BlockBreakEvent event) {
-
-  }
-
-  @EventHandler
-  public void onPlace(BlockPlaceEvent event) {
-    
-  }
-
-  @EventHandler
-  public void onKill(EntityDeathEvent event) {
-    
   }
 }
 
