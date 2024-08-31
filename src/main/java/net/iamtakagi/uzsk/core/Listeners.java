@@ -1,6 +1,7 @@
 package net.iamtakagi.uzsk.core;
 
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -42,13 +43,20 @@ class GeneralListener implements Listener {
 }
 
 class ExperienceListener implements Listener {
+
     @EventHandler
     public void onBreak(BlockBreakEvent event) {
         ProfileDao profileDao = Core.getInstance().getProfileDao();
         CoreConfig config = Core.getInstance().getCoreConfig();
         Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
+        int prevLevel = profile.getExperiences().getLevel();
         profile.getExperiences().set(profile.getExperiences().size()
                 + (profile.getExperiences().size() * config.getExperienceSettings().getOnBreakBlockIncreasePercentage()));
+        int newLevel = profile.getExperiences().getLevel();
+        if (newLevel > prevLevel) {
+            event.getPlayer().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);
+            event.getPlayer().playSound(event.getPlayer().getLocation(), "entity.player.levelup", 1, 1);
+        }
     }
 
     @EventHandler
@@ -56,8 +64,14 @@ class ExperienceListener implements Listener {
         ProfileDao profileDao = Core.getInstance().getProfileDao();
         CoreConfig config = Core.getInstance().getCoreConfig();
         Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
+        int prevLevel = profile.getExperiences().getLevel();
         profile.getExperiences().set(profile.getExperiences().size()
                 + (profile.getExperiences().size() * config.getExperienceSettings().getOnPlaceBlockIncreasePercentage()));
+        int newLevel = profile.getExperiences().getLevel();
+        if (newLevel > prevLevel) {
+            event.getPlayer().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);
+            event.getPlayer().playSound(event.getPlayer().getLocation(), "entity.player.levelup", 1, 1);
+        }
     }
 
     @EventHandler
@@ -73,8 +87,14 @@ class ExperienceListener implements Listener {
             return;
         }
         Profile profile = profileDao.findByUUID(event.getEntity().getKiller().getUniqueId());
+        int prevLevel = profile.getExperiences().getLevel();
         profile.getExperiences().set(profile.getExperiences().size()
                 + (profile.getExperiences().size() * config.getExperienceSettings().getOnKillMobIncreasePercentage()));
+        int newLevel = profile.getExperiences().getLevel();
+        if (newLevel > prevLevel) {
+            event.getEntity().getKiller().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);
+            event.getEntity().getKiller().playSound(event.getEntity().getKiller().getLocation(), "entity.player.levelup", 1, 1);
+        }
     }
 
     @EventHandler
@@ -82,7 +102,13 @@ class ExperienceListener implements Listener {
         ProfileDao profileDao = Core.getInstance().getProfileDao();
         CoreConfig config = Core.getInstance().getCoreConfig();
         Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
+        int prevLevel = profile.getExperiences().getLevel();
         profile.getExperiences().set(profile.getExperiences().size()
                 + (profile.getExperiences().size() * config.getExperienceSettings().getOnChatIncreasePercentage()));
+        int newLevel = profile.getExperiences().getLevel();
+        if (newLevel > prevLevel) {
+            event.getPlayer().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);
+            event.getPlayer().playSound(event.getPlayer().getLocation(), "entity.player.levelup", 1, 1);
+        }
     }
 }
