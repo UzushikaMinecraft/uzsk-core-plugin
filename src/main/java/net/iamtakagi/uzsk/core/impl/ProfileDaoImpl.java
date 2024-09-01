@@ -20,7 +20,7 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public void insert(Profile profile) {
-        String sql = "INSERT INTO profiles (uuid, initial_login_date, last_login_date, play_time, experiences, currency, total_build_blocks, total_destroy_blocks, total_mob_kills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO profile (uuid, initial_login_date, last_login_date, play_time, experiences, currency, total_build_blocks, total_destroy_blocks, total_mob_kills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStmt = database.getConnection().prepareStatement(sql)) {
             preparedStmt.setString(1, profile.getUuid().toString());
             preparedStmt.setTimestamp(2, new java.sql.Timestamp(profile.getInitialLoginDate()));
@@ -39,7 +39,7 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public void update(Profile profile) {
-        String sql = "UPDATE profiles SET initial_login_date = ?, last_login_date = ?, play_time = ?, experiences = ?, currency = ?, total_build_blocks = ?, total_destroy_blocks = ?, total_mob_kills = ? WHERE uuid = ?";
+        String sql = "UPDATE profile SET initial_login_date = ?, last_login_date = ?, play_time = ?, experiences = ?, currency = ?, total_build_blocks = ?, total_destroy_blocks = ?, total_mob_kills = ? WHERE uuid = ?";
         try (PreparedStatement preparedStmt = database.getConnection().prepareStatement(sql)) {
             preparedStmt.setTimestamp(1, new java.sql.Timestamp(profile.getInitialLoginDate()));
             preparedStmt.setTimestamp(2, new java.sql.Timestamp(profile.getLastLoginDate()));
@@ -58,12 +58,12 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public void deleteById(Integer id) {
-        this.database.execute("DELETE FROM profiles WHERE id = " + id);
+        this.database.execute("DELETE FROM profile WHERE id = " + id);
     }
 
     @Override
     public Profile findById(Integer id) {
-        ResultSet resultSet = this.database.execute("SELECT * FROM profiles WHERE id = " + id);
+        ResultSet resultSet = this.database.execute("SELECT * FROM profile WHERE id = " + id);
         try {
             if (resultSet.next()) {
                 return new Profile(
@@ -86,7 +86,7 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public Profile findByUUID(UUID uuid) {
-        ResultSet resultSet = this.database.execute("SELECT * FROM profiles WHERE uuid = '" + uuid.toString() + "'");
+        ResultSet resultSet = this.database.execute("SELECT * FROM  WHERE uuid = '" + uuid.toString() + "'");
         try {
             if (resultSet.next()) {
                 return new Profile(
@@ -109,7 +109,7 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public List<Profile> findAll() {
-        ResultSet resultSet = this.database.execute("SELECT * FROM profiles");
+        ResultSet resultSet = this.database.execute("SELECT * FROM profile");
         try {
             while (resultSet.next()) {
                 return List.of(new Profile(
