@@ -73,38 +73,38 @@ public class CoreConfig {
     }
 
     public class ExperienceSettings {
-        private double onLoginNetworkIncreasePercentage;
-        private double onBreakBlockIncreasePercentage;
-        private double onPlaceBlockIncreasePercentage;
-        private double onKillMobIncreasePercentage;
-        private double onChatIncreasePercentage;
+        private float onLoginNetworkIncrements;
+        private float onBreakBlockIncrements;
+        private float onPlaceBlockIncrements;
+        private float onKillMobIncrements;
+        private float onChatIncrements;
 
         public ExperienceSettings(YamlConfiguration yaml) {
-            this.onLoginNetworkIncreasePercentage = yaml.getDouble("experience.on_login_network.increase_percentage");
-            this.onBreakBlockIncreasePercentage = yaml.getDouble("experience.on_break_block.increase_percentage");
-            this.onPlaceBlockIncreasePercentage = yaml.getDouble("experience.on_place_block.increase_percentage");
-            this.onKillMobIncreasePercentage = yaml.getDouble("experience.on_kill_mob.increase_percentage");
-            this.onChatIncreasePercentage = yaml.getDouble("experience.on_chat.increase_percentage");
+            this.onLoginNetworkIncrements = (float) yaml.getDouble("experience.on_login_network.increments");
+            this.onBreakBlockIncrements = (float) yaml.getDouble("experience.on_break_block.increments");
+            this.onPlaceBlockIncrements = (float) yaml.getDouble("experience.on_place_block.increments");
+            this.onKillMobIncrements = (float) yaml.getDouble("experience.on_kill_mob.increments");
+            this.onChatIncrements = (float) yaml.getDouble("experience.on_chat.increments");
         }
 
-        public double getOnLoginNetworkIncreasePercentage() {
-            return onLoginNetworkIncreasePercentage;
+        public float getOnLoginNetworkIncrements() {
+            return this.onLoginNetworkIncrements;
         }
 
-        public double getOnBreakBlockIncreasePercentage() {
-            return onBreakBlockIncreasePercentage;
+        public float getOnBreakBlockIncrements() {
+            return this.onBreakBlockIncrements;
         }
 
-        public double getOnPlaceBlockIncreasePercentage() {
-            return onPlaceBlockIncreasePercentage;
+        public float getOnPlaceBlockIncrements() {
+            return this.onPlaceBlockIncrements;
         }
 
-        public double getOnKillMobIncreasePercentage() {
-            return onKillMobIncreasePercentage;
+        public float getOnKillMobIncrements() {
+            return this.onKillMobIncrements;
         }
 
-        public double getOnChatIncreasePercentage() {
-            return onChatIncreasePercentage;
+        public float getOnChatIncrements() {
+            return this.onChatIncrements;
         }
     }
 
@@ -112,12 +112,14 @@ public class CoreConfig {
         private boolean enabled;
         private String title;
         private List<String> lines;
+        private int expProgressBarSize;
         private PatternSettings patternSettings;
 
         public SidebarSettings(YamlConfiguration yaml) {
             this.enabled = yaml.getBoolean("sidebar.enabled");
             this.title = yaml.getString("sidebar.title");
             this.lines = yaml.getStringList("sidebar.lines");
+            this.expProgressBarSize = yaml.getInt("sidebar.exp_progress_bar_size");
             this.patternSettings = new PatternSettings(yaml);
         }
 
@@ -131,6 +133,10 @@ public class CoreConfig {
 
         public List<String> getLines() {
             return this.lines;
+        }
+
+        public int getExpProgressBarSize() {
+            return this.expProgressBarSize;
         }
 
         public PatternSettings getPatternSettings() {

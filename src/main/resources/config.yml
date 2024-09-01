@@ -8,27 +8,28 @@ mysql:
 experience:
   # ネットワーク最終ログインから1日以上経っていたら
   on_login_network:
-    increase_parcentage: 50.0
+    increments: 50.0
   # ブロックを破壊したとき
   on_break_block: 
-    increase_parcentage: 5.0
+    increments: 5.0
   # ブロックを設置したとき
   on_place_block:
-    increase_parcentage: 5.0
+    increments: 5.0
   # モブを倒したとき
   on_kill_mob:
-    increase_parcentage: 5.0
+    increments: 5.0
   # チャットを送信したとき
   on_chat:
-    increase_parcentage: 5.0
+    increments: 3.0
 
 sidebar:
   enabled: true
   title: "&dウズシカさーばー"
   lines:
-    - "&rServer: "
+    - "Lv.{LEVEL} ({EXP_PERCENTAGE}%)"
+    - "{EXP_PROGRESS_BAR}"
+    - "&rServer: dev"
     - "&r接続数: {ONLINE_PLAYERS}"
-    - "&rレベル: {LEVEL} ({EXP_PERCENTAGE}%)"
     - "&r{PING}ms"
     - "&r{WORLD}"
     - "&r{WORLD_TIME} ({WEATHER})"
@@ -41,6 +42,7 @@ sidebar:
     time: HH:mm:ss
     world_date: MM/dd
     world_time: HH:mm
+  exp_progress_bar_size: 50
 
 webapi:
   endpoint_url: http://uszk_webapi:8080/api/
