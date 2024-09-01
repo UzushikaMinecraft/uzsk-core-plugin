@@ -105,8 +105,9 @@
       <groupId>com.mysql</groupId>
       <artifactId>mysql-connector-j</artifactId>
       <version>9.0.0</version>
-      </dependency>
-      <dependency>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>net.megavex</groupId>
       <artifactId>scoreboard-library-api</artifactId>
       <version>2.1.12</version>

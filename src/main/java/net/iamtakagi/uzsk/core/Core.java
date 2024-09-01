@@ -22,9 +22,9 @@ public class Core extends JavaPlugin {
     this.database = new Database(
       this.config.getDatabaseSettings().getHost(),
       this.config.getDatabaseSettings().getPort(),
-      this.config.getDatabaseSettings().getDatabase(),
       this.config.getDatabaseSettings().getUsername(),
-      this.config.getDatabaseSettings().getPassword()
+      this.config.getDatabaseSettings().getPassword(),
+      this.config.getDatabaseSettings().getDatabase()
     );
     this.profileDao = new DaoFactory(database).createProfileDao();
     this.getServer().getPluginManager().registerEvents(new GeneralListener(), this);

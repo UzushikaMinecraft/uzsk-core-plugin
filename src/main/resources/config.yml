@@ -1,8 +1,8 @@
 mysql:
-  host: uzsk
-  port: uzsk
+  host: dev_db
+  port: 3306
   database: uzsk
-  username: uzsk
+  username: root
   password: uzsk
 
 experience:

@@ -31,6 +31,7 @@ public class CorePlayer {
 
     public void init () {
         if (Core.getInstance().getCoreConfig().getSidebarSettings().isEnabled()) {
+            this.sidebar = new CoreSidebar(getPlayer());
             this.sidebar.setup();
         }
         if (Core.getInstance().getCoreConfig().getBossbarSettings().isEnabled()) {
