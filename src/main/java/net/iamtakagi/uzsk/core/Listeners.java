@@ -35,8 +35,8 @@ class GeneralListener implements Listener {
             profileDao.insert(profile);
         } else {
             if (profile.getLastLoginDate() < System.currentTimeMillis() - 86400000) {
-                profile.getExperiences().set(profile.getExperiences().size() + (profile.getExperiences().size()
-                        * config.getExperienceSettings().getOnLoginNetworkIncreasePercentage()));
+                profile.getExperiences().set((float) (profile.getExperiences().size() + (profile.getExperiences().size()
+                        * config.getExperienceSettings().getOnLoginNetworkIncreasePercentage())));
             }
             profile.setLastLoginDate(System.currentTimeMillis());
             profileDao.update(profile);
@@ -65,8 +65,8 @@ class ExperienceListener implements Listener {
         CoreConfig config = Core.getInstance().getCoreConfig();
         Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
         int prevLevel = profile.getExperiences().getLevel();
-        profile.getExperiences().set(profile.getExperiences().size()
-                + (profile.getExperiences().size() * config.getExperienceSettings().getOnBreakBlockIncreasePercentage()));
+        profile.getExperiences().set((float) (profile.getExperiences().size()
+                + (profile.getExperiences().size() * config.getExperienceSettings().getOnBreakBlockIncreasePercentage())));
         int newLevel = profile.getExperiences().getLevel();
         if (newLevel > prevLevel) {
             event.getPlayer().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);
@@ -80,8 +80,8 @@ class ExperienceListener implements Listener {
         CoreConfig config = Core.getInstance().getCoreConfig();
         Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
         int prevLevel = profile.getExperiences().getLevel();
-        profile.getExperiences().set(profile.getExperiences().size()
-                + (profile.getExperiences().size() * config.getExperienceSettings().getOnPlaceBlockIncreasePercentage()));
+        profile.getExperiences().set((float) (profile.getExperiences().size()
+                + (profile.getExperiences().size() * config.getExperienceSettings().getOnPlaceBlockIncreasePercentage())));
         int newLevel = profile.getExperiences().getLevel();
         if (newLevel > prevLevel) {
             event.getPlayer().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);
@@ -103,8 +103,8 @@ class ExperienceListener implements Listener {
         }
         Profile profile = profileDao.findByUUID(event.getEntity().getKiller().getUniqueId());
         int prevLevel = profile.getExperiences().getLevel();
-        profile.getExperiences().set(profile.getExperiences().size()
-                + (profile.getExperiences().size() * config.getExperienceSettings().getOnKillMobIncreasePercentage()));
+        profile.getExperiences().set((float) (profile.getExperiences().size()
+                + (profile.getExperiences().size() * config.getExperienceSettings().getOnKillMobIncreasePercentage())));
         int newLevel = profile.getExperiences().getLevel();
         if (newLevel > prevLevel) {
             event.getEntity().getKiller().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);
@@ -118,8 +118,8 @@ class ExperienceListener implements Listener {
         CoreConfig config = Core.getInstance().getCoreConfig();
         Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
         int prevLevel = profile.getExperiences().getLevel();
-        profile.getExperiences().set(profile.getExperiences().size()
-                + (profile.getExperiences().size() * config.getExperienceSettings().getOnChatIncreasePercentage()));
+        profile.getExperiences().set((float) (profile.getExperiences().size()
+                + (profile.getExperiences().size() * config.getExperienceSettings().getOnChatIncreasePercentage())));
         int newLevel = profile.getExperiences().getLevel();
         if (newLevel > prevLevel) {
             event.getPlayer().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);

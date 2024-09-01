@@ -15,9 +15,9 @@ public class Experiences {
          }
     }
 
-    public double size;
+    public float size;
 
-    public Experiences(double size) {
+    public Experiences(float size) {
         this.size = size;
     }
 
@@ -35,19 +35,19 @@ public class Experiences {
         return LEVELING.get(getLevel() + 1);
     }
 
-    public void increase(double i) {
+    public void increase(float i) {
         this.size += i;
     }
 
-    public void decrease(double d) {
+    public void decrease(float d) {
         this.size -= d;
     }
 
-    public void set(double exp) {
-        this.size = exp;
+    public void set(float d) {
+        this.size = d;
     }
 
-    public double size() {
+    public float size() {
         return size;
     }
 

@@ -20,7 +20,7 @@ public class Profile implements Serializable {
 	private int totalDestroyBlocks;
 	private int totalMobKills;
 
-	public Profile(UUID uuid, long initialLoginDate, long lastLoginDate, int playTime, double experiences, int currency,
+	public Profile(UUID uuid, long initialLoginDate, long lastLoginDate, int playTime, float experiences, int currency,
 			int totalBuildBlocks, int totalDestroyBlocks, int totalMobKills) {
 		this.uuid = uuid;
 		this.initialLoginDate = initialLoginDate;

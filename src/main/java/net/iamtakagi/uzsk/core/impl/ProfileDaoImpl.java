@@ -44,7 +44,7 @@ public class ProfileDaoImpl implements ProfileDao {
             preparedStmt.setTimestamp(1, new java.sql.Timestamp(profile.getInitialLoginDate()));
             preparedStmt.setTimestamp(2, new java.sql.Timestamp(profile.getLastLoginDate()));
             preparedStmt.setLong(3, profile.getPlayTime());
-            preparedStmt.setDouble(4, profile.getExperiences().size());
+            preparedStmt.setFloat(4, profile.getExperiences().size());
             preparedStmt.setInt(5, profile.getCurrency());
             preparedStmt.setInt(6, profile.getTotalBuildBlocks());
             preparedStmt.setInt(7, profile.getTotalDestroyBlocks());
@@ -71,7 +71,7 @@ public class ProfileDaoImpl implements ProfileDao {
                     resultSet.getTimestamp("initial_login_date").getTime(),
                     resultSet.getTimestamp("last_login_date").getTime(),
                     resultSet.getInt("play_time"),
-                    resultSet.getDouble("experiences"),
+                    resultSet.getFloat("experiences"),
                     resultSet.getInt("currency"),
                     resultSet.getInt("total_build_blocks"),
                     resultSet.getInt("total_destroy_blocks"),
@@ -94,7 +94,7 @@ public class ProfileDaoImpl implements ProfileDao {
                     resultSet.getTimestamp("initial_login_date").getTime(),
                     resultSet.getTimestamp("last_login_date").getTime(),
                     resultSet.getInt("play_time"),
-                    resultSet.getDouble("experiences"),
+                    resultSet.getFloat("experiences"),
                     resultSet.getInt("currency"),
                     resultSet.getInt("total_build_blocks"),
                     resultSet.getInt("total_destroy_blocks"),
@@ -117,7 +117,7 @@ public class ProfileDaoImpl implements ProfileDao {
                     resultSet.getTimestamp("initial_login_date").getTime(),
                     resultSet.getTimestamp("last_login_date").getTime(),
                     resultSet.getInt("play_time"),
-                    resultSet.getDouble("experiences"),
+                    resultSet.getFloat("experiences"),
                     resultSet.getInt("currency"),
                     resultSet.getInt("total_build_blocks"),
                     resultSet.getInt("total_destroy_blocks"),
