@@ -32,6 +32,7 @@ public class ProfileDaoImpl implements ProfileDao {
             preparedStmt.setInt(8, profile.getTotalDestroyBlocks());
             preparedStmt.setInt(9, profile.getTotalMobKills());
             preparedStmt.execute();
+            preparedStmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -51,6 +52,7 @@ public class ProfileDaoImpl implements ProfileDao {
             preparedStmt.setInt(8, profile.getTotalMobKills());
             preparedStmt.setString(9, profile.getUuid().toString());
             preparedStmt.execute();
+            preparedStmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -86,7 +88,7 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public Profile findByUUID(UUID uuid) {
-        ResultSet resultSet = this.database.execute("SELECT * FROM  WHERE uuid = '" + uuid.toString() + "'");
+        ResultSet resultSet = this.database.execute("SELECT * FROM profile WHERE uuid = '" + uuid.toString() + "'");
         try {
             if (resultSet.next()) {
                 return new Profile(

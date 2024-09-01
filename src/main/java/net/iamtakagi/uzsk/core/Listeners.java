@@ -45,6 +45,29 @@ class GeneralListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        ProfileDao profileDao = Core.getInstance().getProfileDao();
+        CoreConfig config = Core.getInstance().getCoreConfig();
+        Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
+        if (profile == null) {
+            profile = new Profile(
+                    event.getPlayer().getUniqueId(),
+                    System.currentTimeMillis(),
+                    System.currentTimeMillis(),
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0);
+            profileDao.insert(profile);
+        } else {
+            if (profile.getLastLoginDate() < System.currentTimeMillis() - 86400000) {
+                profile.getExperiences().set((float) (profile.getExperiences().size() + (profile.getExperiences().size()
+                        * config.getExperienceSettings().getOnLoginNetworkIncreasePercentage())));
+            }
+            profile.setLastLoginDate(System.currentTimeMillis());
+            profileDao.update(profile);
+        }
         CorePlayer corePlayer = new CorePlayer(event.getPlayer().getUniqueId());
         corePlayer.init();
     }
