@@ -74,6 +74,16 @@
         <id>jitpack.io</id>
         <url>https://jitpack.io</url>
     </repository>
+    <repository>
+      <id>iroha</id>
+      <name>iroha</name>
+      <url>https://maven.pkg.github.com/2mug1/iroha</url>
+    </repository>
+    <repository>
+      <id>medaka</id>
+      <name>medaka</name>
+      <url>https://maven.pkg.github.com/2mug1/medaka</url>
+    </repository>
   </repositories>
 
   <dependencies>
@@ -148,6 +158,29 @@
       <artifactId>gson</artifactId>
       <version>2.11.0</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.iamtakagi</groupId>
+      <artifactId>iroha</artifactId>
+      <version>1.0.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.iamtakagi</groupId>
+      <artifactId>medaka</artifactId>
+      <version>1.0.2</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.16.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.iamtakagi</groupId>
+      <artifactId>kodaka</artifactId>
+      <version>1.0.3</version>
     </dependency>
   </dependencies>
 
