@@ -73,15 +73,15 @@ public class CoreSidebar {
       }
 
       if (raw.contains("{LEVEL}")) {
-        raw = raw.replace("{LEVEL}", "" + player.getProfile().getExperiences().getLevel());
+        raw = raw.replace("{LEVEL}", "" + player.getProfile().getExperience().getCurrentLevel());
       }
 
       if (raw.contains("{EXP_PERCENTAGE}")) {
-        raw = raw.replace("{EXP_PERCENTAGE}", "" + player.getProfile().getExperiences().getParcentage() * 100);
+        raw = raw.replace("{EXP_PERCENTAGE}", "" + player.getProfile().getExperience().getPercentageToNextLevel());
       }
 
       if (raw.contains("{EXP_PROGRESS_BAR}")) {
-        raw = raw.replace("{EXP_PROGRESS_BAR}", player.getProfile().getExperiences().getProgressBar());
+        raw = raw.replace("{EXP_PROGRESS_BAR}", player.getProfile().getExperience().getProgressBar(Core.getInstance().getCoreConfig().getSidebarSettings().getExpProgressBarSize()));
       }
 
       if (raw.contains("{PING}")) {

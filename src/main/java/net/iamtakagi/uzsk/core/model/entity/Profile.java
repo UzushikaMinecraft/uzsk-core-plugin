@@ -3,7 +3,7 @@ package net.iamtakagi.uzsk.core.model.entity;
 import java.io.Serializable;
 import java.util.UUID;
 
-import net.iamtakagi.uzsk.core.Experiences;
+import net.iamtakagi.uzsk.core.api.external.MojangApi;
 
 public class Profile implements Serializable {
 
@@ -13,20 +13,20 @@ public class Profile implements Serializable {
 	private UUID uuid;
 	private long initialLoginDate;
 	private long lastLoginDate;
-	private long playTime;
-	private Experiences experiences;
+	private long totalPlayTime;
+	private Experience experience;
 	private int currency;
 	private int totalBuildBlocks;
 	private int totalDestroyBlocks;
 	private int totalMobKills;
 
-	public Profile(UUID uuid, long initialLoginDate, long lastLoginDate, int playTime, float experiences, int currency,
+	public Profile(UUID uuid, long initialLoginDate, long lastLoginDate, int totalPlayTime, float experience, int currency,
 			int totalBuildBlocks, int totalDestroyBlocks, int totalMobKills) {
 		this.uuid = uuid;
 		this.initialLoginDate = initialLoginDate;
 		this.lastLoginDate = lastLoginDate;
-		this.playTime = playTime;
-		this.experiences = new Experiences(experiences);
+		this.totalPlayTime = totalPlayTime;
+		this.experience = new Experience(experience);
 		this.currency = currency;
 		this.totalBuildBlocks = totalBuildBlocks;
 		this.totalDestroyBlocks = totalDestroyBlocks;
@@ -65,20 +65,20 @@ public class Profile implements Serializable {
 		this.lastLoginDate = lastLoginDate;
 	}
 
-	public long getPlayTime() {
-		return playTime;
+	public long getTotalPlayTime() {
+		return totalPlayTime;
 	}
 
-	public void setPlayTime(long playTime) {
-		this.playTime = playTime;
+	public void setTotalPlayTime(long playTime) {
+		this.totalPlayTime = playTime;
 	}
 
-	public Experiences getExperiences() {
-		return experiences;
+	public Experience getExperience() {
+		return experience;
 	}
 
-	public void setExperiences(Experiences experiences) {
-		this.experiences = experiences;
+	public void setExperience(Experience experience) {
+		this.experience = experience;
 	}
 
 	public int getCurrency() {
@@ -113,10 +113,14 @@ public class Profile implements Serializable {
 		this.totalMobKills = totalMobKills;
 	}
 
+	public String getName () {
+		return MojangApi.getUsernameByUUID(uuid);
+	}
+
 	@Override
 	public String toString() {
 		return "Profile [id=" + id + ", uuid=" + uuid + ", initialLoginDate=" + initialLoginDate + ", lastLoginDate="
-				+ lastLoginDate + ", playTime=" + playTime + ", experiences=" + experiences + ", currency=" + currency
+				+ lastLoginDate + ", totalPlayTime=" + totalPlayTime + ", experience=" + experience + ", currency=" + currency
 				+ ", totalBuildBlocks=" + totalBuildBlocks + ", totalDestroyBlocks=" + totalDestroyBlocks
 				+ ", totalMobKills=" + totalMobKills + "]";
 	}

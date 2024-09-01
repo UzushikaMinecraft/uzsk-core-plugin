@@ -21,13 +21,13 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public void insert(Profile profile) {
-        String sql = "INSERT INTO profile (uuid, initial_login_date, last_login_date, play_time, experiences, currency, total_build_blocks, total_destroy_blocks, total_mob_kills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO profile (uuid, initial_login_date, last_login_date, total_play_time, experience, currency, total_build_blocks, total_destroy_blocks, total_mob_kills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStmt = database.getConnection().prepareStatement(sql)) {
             preparedStmt.setString(1, profile.getUuid().toString());
             preparedStmt.setTimestamp(2, new java.sql.Timestamp(profile.getInitialLoginDate()));
             preparedStmt.setTimestamp(3, new java.sql.Timestamp(profile.getLastLoginDate()));
-            preparedStmt.setLong(4, profile.getPlayTime());
-            preparedStmt.setDouble(5, profile.getExperiences().size());
+            preparedStmt.setLong(4, profile.getTotalPlayTime());
+            preparedStmt.setDouble(5, profile.getExperience().size());
             preparedStmt.setInt(6, profile.getCurrency());
             preparedStmt.setInt(7, profile.getTotalBuildBlocks());
             preparedStmt.setInt(8, profile.getTotalDestroyBlocks());
@@ -41,12 +41,12 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public void update(Profile profile) {
-        String sql = "UPDATE profile SET initial_login_date = ?, last_login_date = ?, play_time = ?, experiences = ?, currency = ?, total_build_blocks = ?, total_destroy_blocks = ?, total_mob_kills = ? WHERE uuid = ?";
+        String sql = "UPDATE profile SET initial_login_date = ?, last_login_date = ?, total_play_time = ?, experience = ?, currency = ?, total_build_blocks = ?, total_destroy_blocks = ?, total_mob_kills = ? WHERE uuid = ?";
         try (PreparedStatement preparedStmt = database.getConnection().prepareStatement(sql)) {
             preparedStmt.setTimestamp(1, new java.sql.Timestamp(profile.getInitialLoginDate()));
             preparedStmt.setTimestamp(2, new java.sql.Timestamp(profile.getLastLoginDate()));
-            preparedStmt.setLong(3, profile.getPlayTime());
-            preparedStmt.setFloat(4, profile.getExperiences().size());
+            preparedStmt.setLong(3, profile.getTotalPlayTime());
+            preparedStmt.setFloat(4, profile.getExperience().size());
             preparedStmt.setInt(5, profile.getCurrency());
             preparedStmt.setInt(6, profile.getTotalBuildBlocks());
             preparedStmt.setInt(7, profile.getTotalDestroyBlocks());
@@ -81,8 +81,8 @@ public class ProfileDaoImpl implements ProfileDao {
                 UUID.fromString(resultSet.getString("uuid")),
                 resultSet.getTimestamp("initial_login_date").getTime(),
                 resultSet.getTimestamp("last_login_date").getTime(),
-                resultSet.getInt("play_time"),
-                resultSet.getFloat("experiences"),
+                resultSet.getInt("total_play_time"),
+                resultSet.getFloat("experience"),
                 resultSet.getInt("currency"),
                 resultSet.getInt("total_build_blocks"),
                 resultSet.getInt("total_destroy_blocks"),
@@ -105,8 +105,8 @@ public class ProfileDaoImpl implements ProfileDao {
                     UUID.fromString(resultSet.getString("uuid")),
                     resultSet.getTimestamp("initial_login_date").getTime(),
                     resultSet.getTimestamp("last_login_date").getTime(),
-                    resultSet.getInt("play_time"),
-                    resultSet.getFloat("experiences"),
+                    resultSet.getInt("total_play_time"),
+                    resultSet.getFloat("experience"),
                     resultSet.getInt("currency"),
                     resultSet.getInt("total_build_blocks"),
                     resultSet.getInt("total_destroy_blocks"),
@@ -130,8 +130,8 @@ public class ProfileDaoImpl implements ProfileDao {
                     UUID.fromString(resultSet.getString("uuid")),
                     resultSet.getTimestamp("initial_login_date").getTime(),
                     resultSet.getTimestamp("last_login_date").getTime(),
-                    resultSet.getInt("play_time"),
-                    resultSet.getFloat("experiences"),
+                    resultSet.getInt("total_play_time"),
+                    resultSet.getFloat("experience"),
                     resultSet.getInt("currency"),
                     resultSet.getInt("total_build_blocks"),
                     resultSet.getInt("total_destroy_blocks"),
