@@ -1,8 +1,13 @@
 package net.iamtakagi.uzsk.core;
 
+import org.apache.maven.model.Profile;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.iamtakagi.kodaka.Kodaka;
+import net.iamtakagi.medaka.Medaka;
+import net.iamtakagi.uzsk.core.command.ProfileCommand;
 import net.iamtakagi.uzsk.core.model.DaoFactory;
 import net.iamtakagi.uzsk.core.model.ProfileDao;
 
@@ -29,9 +34,16 @@ public class Core extends JavaPlugin {
     this.profileDao = new DaoFactory(database).createProfileDao();
     this.getServer().getPluginManager().registerEvents(new GeneralListener(), this);
     this.getServer().getPluginManager().registerEvents(new ExperienceListener(), this);
+    Medaka.init(this);
+    Kodaka kodaka = new Kodaka(this);
+    kodaka.registerCommand(new ProfileCommand());
     if (this.config.getSidebarSettings().isEnabled()) {
       CoreSidebar.init();
     }
+    Bukkit.getOnlinePlayers().forEach(player -> {
+      CorePlayer corePlayer = new CorePlayer(player.getUniqueId());
+      corePlayer.init();
+    });
   }
 
   @Override
