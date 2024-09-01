@@ -84,12 +84,13 @@ class ExperienceListener implements Listener {
 
     @EventHandler
     public void onBreak(BlockBreakEvent event) {
-        ProfileDao profileDao = Core.getInstance().getProfileDao();
+        CorePlayer corePlayer = CorePlayer.getCorePlayer(event.getPlayer().getUniqueId());
+        Profile profile = corePlayer.getProfile();
         CoreConfig config = Core.getInstance().getCoreConfig();
-        Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
         int prevLevel = profile.getExperiences().getLevel();
-        profile.getExperiences().set((float) (profile.getExperiences().size()
+        profile.getExperiences().set(1 + (float) (profile.getExperiences().size()
                 + (profile.getExperiences().size() * config.getExperienceSettings().getOnBreakBlockIncreasePercentage())));
+        corePlayer.saveProfile();
         int newLevel = profile.getExperiences().getLevel();
         if (newLevel > prevLevel) {
             event.getPlayer().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);
@@ -99,12 +100,13 @@ class ExperienceListener implements Listener {
 
     @EventHandler
     public void onPlace(BlockPlaceEvent event) {
-        ProfileDao profileDao = Core.getInstance().getProfileDao();
+        CorePlayer corePlayer = CorePlayer.getCorePlayer(event.getPlayer().getUniqueId());
+        Profile profile = corePlayer.getProfile();
         CoreConfig config = Core.getInstance().getCoreConfig();
-        Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
         int prevLevel = profile.getExperiences().getLevel();
-        profile.getExperiences().set((float) (profile.getExperiences().size()
-                + (profile.getExperiences().size() * config.getExperienceSettings().getOnPlaceBlockIncreasePercentage())));
+        profile.getExperiences().set(1 + (float) (profile.getExperiences().size()
+                + (profile.getExperiences().size() * config.getExperienceSettings().getOnBreakBlockIncreasePercentage())));
+        corePlayer.saveProfile();
         int newLevel = profile.getExperiences().getLevel();
         if (newLevel > prevLevel) {
             event.getPlayer().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);
@@ -114,8 +116,14 @@ class ExperienceListener implements Listener {
 
     @EventHandler
     public void onKill(EntityDeathEvent event) {
-        ProfileDao profileDao = Core.getInstance().getProfileDao();
-        CoreConfig config = Core.getInstance().getCoreConfig();
+        if (event.getEntity().getKiller() == null) {
+            return;
+        }
+
+        if (event.getEntity().getKiller().getType() == EntityType.PLAYER) {
+            return;
+        }
+
         if (event.getEntityType() == EntityType.PLAYER ||
                 event.getEntityType() == EntityType.ARMOR_STAND ||
                 event.getEntityType() == EntityType.ITEM_FRAME ||
@@ -124,10 +132,15 @@ class ExperienceListener implements Listener {
                 event.getEntityType() == EntityType.VILLAGER) {
             return;
         }
-        Profile profile = profileDao.findByUUID(event.getEntity().getKiller().getUniqueId());
+
+        CorePlayer corePlayer = CorePlayer.getCorePlayer(event.getEntity().getKiller().getUniqueId());
+        Profile profile = corePlayer.getProfile();
+        CoreConfig config = Core.getInstance().getCoreConfig();
+
         int prevLevel = profile.getExperiences().getLevel();
-        profile.getExperiences().set((float) (profile.getExperiences().size()
-                + (profile.getExperiences().size() * config.getExperienceSettings().getOnKillMobIncreasePercentage())));
+        profile.getExperiences().set(1 + (float) (profile.getExperiences().size()
+                + (profile.getExperiences().size() * config.getExperienceSettings().getOnBreakBlockIncreasePercentage())));
+        corePlayer.saveProfile();
         int newLevel = profile.getExperiences().getLevel();
         if (newLevel > prevLevel) {
             event.getEntity().getKiller().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);
@@ -137,12 +150,13 @@ class ExperienceListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
-        ProfileDao profileDao = Core.getInstance().getProfileDao();
+        CorePlayer corePlayer = CorePlayer.getCorePlayer(event.getPlayer().getUniqueId());
+        Profile profile = corePlayer.getProfile();
         CoreConfig config = Core.getInstance().getCoreConfig();
-        Profile profile = profileDao.findByUUID(event.getPlayer().getUniqueId());
         int prevLevel = profile.getExperiences().getLevel();
-        profile.getExperiences().set((float) (profile.getExperiences().size()
-                + (profile.getExperiences().size() * config.getExperienceSettings().getOnChatIncreasePercentage())));
+        profile.getExperiences().set(1 + (float) (profile.getExperiences().size()
+                + (profile.getExperiences().size() * config.getExperienceSettings().getOnBreakBlockIncreasePercentage())));
+        corePlayer.saveProfile();
         int newLevel = profile.getExperiences().getLevel();
         if (newLevel > prevLevel) {
             event.getPlayer().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);

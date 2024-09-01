@@ -31,18 +31,18 @@ public class CoreSidebar {
         }
     }
 
-    private Player player;
+    private CorePlayer player;
     private Sidebar sidebar;
     private ComponentSidebarLayout layout;
     private BukkitTask tickTask;
 
-    CoreSidebar(Player player) {
+    CoreSidebar(CorePlayer player) {
       this.player = player;
     }
 
     public void setup() {
       this.sidebar = scoreboard.createSidebar();
-      this.sidebar.addPlayer(player);
+      this.sidebar.addPlayer(player.getBukkitPlayer());
       this.tickTask = Bukkit.getScheduler().runTaskTimer(Core.getInstance(), this::tick, 0, 20);
     }
 
@@ -73,49 +73,51 @@ public class CoreSidebar {
       }
 
       if (raw.contains("{LEVEL}")) {
-        Profile profile = Core.getInstance().getProfileDao().findByUUID(player.getUniqueId());
-        raw = raw.replace("{LEVEL}", "" + profile.getExperiences().getLevel());
+        raw = raw.replace("{LEVEL}", "" + player.getProfile().getExperiences().getLevel());
       }
 
       if (raw.contains("{EXP_PERCENTAGE}")) {
-        Profile profile = Core.getInstance().getProfileDao().findByUUID(player.getUniqueId());
-        raw = raw.replace("{EXP_PERCENTAGE}", "" + profile.getExperiences().getParcentage());
+        raw = raw.replace("{EXP_PERCENTAGE}", "" + player.getProfile().getExperiences().getParcentage() * 100);
+      }
+
+      if (raw.contains("{EXP_PROGRESS_BAR}")) {
+        raw = raw.replace("{EXP_PROGRESS_BAR}", player.getProfile().getExperiences().getProgressBar());
       }
 
       if (raw.contains("{PING}")) {
-        raw = raw.replace("{PING}", "" + player.getPing());
+        raw = raw.replace("{PING}", "" + player.getBukkitPlayer().getPing());
       }
 
       if (raw.contains("{X}")) {
-        raw = raw.replace("{X}", "" + player.getLocation().getBlockX());
+        raw = raw.replace("{X}", "" + player.getBukkitPlayer().getLocation().getBlockX());
       }
 
       if (raw.contains("{Y}")) {
-        raw = raw.replace("{Y}", "" + player.getLocation().getBlockY());
+        raw = raw.replace("{Y}", "" + player.getBukkitPlayer().getLocation().getBlockY());
       }
 
       if (raw.contains("{Z}")) {
-        raw = raw.replace("{Z}", "" + player.getLocation().getBlockZ());
+        raw = raw.replace("{Z}", "" + player.getBukkitPlayer().getLocation().getBlockZ());
       }
 
       if (raw.contains("{DIRECTION}")) {
-        raw = raw.replace("{DIRECTION}", Utils.getDirectionByFace(player.getFacing()));
+        raw = raw.replace("{DIRECTION}", Utils.getDirectionByFace(player.getBukkitPlayer().getFacing()));
       }
 
       if (raw.contains("{WORLD}")) {
-        raw = raw.replace("{WORLD}", player.getWorld().getName());
+        raw = raw.replace("{WORLD}", player.getBukkitPlayer().getWorld().getName());
       }
 
       if (raw.contains("{WORLD_DATE}")) {
-        raw = raw.replace("{WORLD_DATE}", TicksFormatter.formatDate(player.getWorld().getFullTime()));
+        raw = raw.replace("{WORLD_DATE}", TicksFormatter.formatDate(player.getBukkitPlayer().getWorld().getFullTime()));
       }
 
       if (raw.contains("{WORLD_TIME}")) {
-        raw = raw.replace("{WORLD_TIME}", TicksFormatter.formatTime(player.getWorld().getTime()));
+        raw = raw.replace("{WORLD_TIME}", TicksFormatter.formatTime(player.getBukkitPlayer().getWorld().getTime()));
       }
 
       if (raw.contains("{WEATHER}")) {
-        raw = raw.replace("{WEATHER}", Utils.getWorldWeather(player.getWorld()));
+        raw = raw.replace("{WEATHER}", Utils.getWorldWeather(player.getBukkitPlayer().getWorld()));
       }
 
       if (raw.contains("{TPS}")) {

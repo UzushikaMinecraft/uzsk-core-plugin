@@ -24,24 +24,20 @@ public class CorePlayer {
     private UUID uuid;
     private Profile profile;
     private CoreSidebar sidebar;
-    private CoreBossbar bossbar;
     public CorePlayer(UUID uuid) {
         this.uuid = uuid;
     }
 
     public void init () {
         if (Core.getInstance().getCoreConfig().getSidebarSettings().isEnabled()) {
-            this.sidebar = new CoreSidebar(getPlayer());
+            this.sidebar = new CoreSidebar(this);
             this.sidebar.setup();
-        }
-        if (Core.getInstance().getCoreConfig().getBossbarSettings().isEnabled()) {
-            this.bossbar = new CoreBossbar(getPlayer());
         }
         this.profile = Core.getInstance().getProfileDao().findByUUID(uuid);
         players.put(uuid, this);
     }
 
-    public Player getPlayer() {
+    public Player getBukkitPlayer() {
         return Bukkit.getPlayer(uuid);
     }
 
@@ -51,10 +47,6 @@ public class CorePlayer {
 
     public CoreSidebar getSidebar() {
         return sidebar;
-    }
-
-    public CoreBossbar getBossbar() {
-        return bossbar;
     }
 
     public Profile getProfile() {

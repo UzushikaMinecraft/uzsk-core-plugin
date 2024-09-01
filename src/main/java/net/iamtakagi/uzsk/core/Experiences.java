@@ -12,7 +12,7 @@ public class Experiences {
     static {
         for (int i = 0; i <= 1024; i++) {
             LEVELING.put(i, i * 256);
-         }
+        }
     }
 
     public float size;
@@ -43,8 +43,8 @@ public class Experiences {
         this.size -= d;
     }
 
-    public void set(float d) {
-        this.size = d;
+    public void set(float s) {
+        this.size = s;
     }
 
     public float size() {

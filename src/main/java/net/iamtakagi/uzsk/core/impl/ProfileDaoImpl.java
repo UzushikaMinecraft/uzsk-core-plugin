@@ -3,6 +3,7 @@ package net.iamtakagi.uzsk.core.impl;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,26 +61,33 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public void deleteById(Integer id) {
-        this.database.execute("DELETE FROM profile WHERE id = " + id);
+        String sql = "DELETE FROM profile WHERE id = ?";
+        try (PreparedStatement preparedStmt = database.getConnection().prepareStatement(sql)) {
+            preparedStmt.setInt(1, id);
+            preparedStmt.execute();
+            preparedStmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Profile findById(Integer id) {
-        ResultSet resultSet = this.database.execute("SELECT * FROM profile WHERE id = " + id);
-        try {
-            if (resultSet.next()) {
-                return new Profile(
-                    UUID.fromString(resultSet.getString("uuid")),
-                    resultSet.getTimestamp("initial_login_date").getTime(),
-                    resultSet.getTimestamp("last_login_date").getTime(),
-                    resultSet.getInt("play_time"),
-                    resultSet.getFloat("experiences"),
-                    resultSet.getInt("currency"),
-                    resultSet.getInt("total_build_blocks"),
-                    resultSet.getInt("total_destroy_blocks"),
-                    resultSet.getInt("total_mob_kills")
-                );
-            }
+        String sql = "SELECT * FROM profile WHERE id = ?";
+        try (PreparedStatement preparedStmt = database.getConnection().prepareStatement(sql)) {
+            preparedStmt.setInt(1, id);
+            ResultSet resultSet = preparedStmt.executeQuery();
+            return new Profile(
+                UUID.fromString(resultSet.getString("uuid")),
+                resultSet.getTimestamp("initial_login_date").getTime(),
+                resultSet.getTimestamp("last_login_date").getTime(),
+                resultSet.getInt("play_time"),
+                resultSet.getFloat("experiences"),
+                resultSet.getInt("currency"),
+                resultSet.getInt("total_build_blocks"),
+                resultSet.getInt("total_destroy_blocks"),
+                resultSet.getInt("total_mob_kills")
+            );
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -88,8 +96,10 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public Profile findByUUID(UUID uuid) {
-        ResultSet resultSet = this.database.execute("SELECT * FROM profile WHERE uuid = '" + uuid.toString() + "'");
-        try {
+        String sql = "SELECT * FROM profile WHERE uuid = ?";
+        try (PreparedStatement preparedStmt = database.getConnection().prepareStatement(sql)) {
+            preparedStmt.setString(1, uuid.toString());
+            ResultSet resultSet = preparedStmt.executeQuery();
             if (resultSet.next()) {
                 return new Profile(
                     UUID.fromString(resultSet.getString("uuid")),
@@ -111,10 +121,12 @@ public class ProfileDaoImpl implements ProfileDao {
 
     @Override
     public List<Profile> findAll() {
-        ResultSet resultSet = this.database.execute("SELECT * FROM profile");
-        try {
+        String sql = "SELECT * FROM profile";
+        try (PreparedStatement preparedStmt = database.getConnection().prepareStatement(sql)) {
+            ResultSet resultSet = preparedStmt.executeQuery();
+            List<Profile> profiles = new ArrayList<>();
             while (resultSet.next()) {
-                return List.of(new Profile(
+                profiles.add(new Profile(
                     UUID.fromString(resultSet.getString("uuid")),
                     resultSet.getTimestamp("initial_login_date").getTime(),
                     resultSet.getTimestamp("last_login_date").getTime(),
@@ -126,6 +138,7 @@ public class ProfileDaoImpl implements ProfileDao {
                     resultSet.getInt("total_mob_kills")
                 ));
             }
+            return profiles;
         } catch (SQLException e) {
             e.printStackTrace();
         }
