@@ -1,22 +1,25 @@
 package net.iamtakagi.uzsk.core;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-
-import net.kyori.adventure.bossbar.BossBar.Color;
-import net.kyori.adventure.bossbar.BossBar.Overlay;
 
 public class CoreConfig {
     private DatabaseSettings databaseSettings;
     private ExperienceSettings experienceSettings;
     private SidebarSettings sidebarSettings;
+    private NametagSettings nametagSettings;
+    private RoleSettings roleSettings;
     private WebApiSettings webApiSettings;
 
     public CoreConfig(YamlConfiguration yaml) {
         this.databaseSettings = new DatabaseSettings(yaml);
         this.experienceSettings = new ExperienceSettings(yaml);
         this.sidebarSettings = new SidebarSettings(yaml);
+        this.nametagSettings = new NametagSettings(yaml);
+        this.roleSettings = new RoleSettings(yaml);
         this.webApiSettings = new WebApiSettings(yaml);
     }
 
@@ -30,6 +33,14 @@ public class CoreConfig {
 
     public SidebarSettings getSidebarSettings() {
         return sidebarSettings;
+    }
+
+    public NametagSettings getNametagSettings() {
+        return nametagSettings;
+    }
+
+    public RoleSettings getRoleSettings() {
+        return roleSettings;
     }
 
     public WebApiSettings getWebApiSettings() {
@@ -170,6 +181,105 @@ public class CoreConfig {
 
             public String getWorldTimePattern() {
                 return this.worldTimePattern;
+            }
+        }
+    }
+
+    public class NametagSettings {
+        boolean enabled;
+
+        public NametagSettings(YamlConfiguration yaml) {
+            this.enabled = yaml.getBoolean("nametag.enabled");
+        }
+
+        public boolean isEnabled() {
+            return this.enabled;
+        }
+    }
+
+    public class RoleSettings {
+        private List<Role> roles;
+        private Role defaultRole;
+
+        public RoleSettings(YamlConfiguration yaml) {
+            // Initialize the lists
+            this.roles = new ArrayList<>();
+            
+            // Load roles from YAML
+            List<Map<String, Object>> roleMaps = (List<Map<String, Object>>) yaml.get("role.roles");
+
+            if (roleMaps != null) {
+                for (Map<String, Object> roleMap : roleMaps) {
+                    String name = (String) roleMap.get("name");
+                    int weight = (Integer) roleMap.get("weight");
+                    String permission = (String) roleMap.get("permission");
+                    String prefix = (String) roleMap.get("prefix");
+                    String suffix = (String) roleMap.get("suffix");
+
+                    Role role = new Role(name, weight, permission, prefix, suffix);
+                    this.roles.add(role);
+                }
+            }
+
+            roles.sort((r1, r2) -> r2.getWeight() - r1.getWeight());
+
+            // Load default role
+            String defaultRoleName = yaml.getString("role.default");
+            if (defaultRoleName != null) {
+                this.defaultRole = findRoleByName(defaultRoleName);
+            }
+        }
+
+        public Role getDefaultRole() {
+            return this.defaultRole;
+        }
+
+        public List<Role> getRoles() {
+            return this.roles;
+        }
+
+        private Role findRoleByName(String name) {
+            for (Role role : this.roles) {
+                if (role.getName().equals(name)) {
+                    return role;
+                }
+            }
+            return null; // or throw an exception if you prefer
+        }
+
+        public class Role {
+            String name;
+            int weight;
+            String permission;
+            String prefix;
+            String suffix;
+
+            public Role(String name, int weight, String permission, String prefix, String suffix) {
+                this.name = name;
+                this.weight = weight;
+                this.permission = permission;
+                this.prefix = prefix;
+                this.suffix = suffix;
+            }
+
+            public String getName() {
+                return this.name;
+            }
+
+            public int getWeight() {
+                return this.weight;
+            }
+
+            public String getPermission() {
+                return this.permission;
+            }
+
+            public String getPrefix() {
+                return this.prefix;
+            }
+
+            public String getSuffix() {
+                return this.suffix;
             }
         }
     }

@@ -10,6 +10,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import net.iamtakagi.uzsk.core.model.ProfileDao;
 import net.iamtakagi.uzsk.core.model.entity.Profile;
@@ -36,10 +37,12 @@ class GeneralListener implements Listener {
         } else {
             if (profile.getLastLoginDate() < System.currentTimeMillis() - 86400000) {
                 profile.getExperience().increase(config.getExperienceSettings().getOnLoginNetworkIncrements());
+                event.getPlayer().sendMessage("ログインボーナス (経験値) を受け取りました！");
             }
             profile.setLastLoginDate(System.currentTimeMillis());
-            profileDao.update(profile);
         }
+
+        profileDao.update(profile);
     }
 
     @EventHandler
@@ -75,6 +78,12 @@ class ExperienceListener implements Listener {
         if (newLevel > prevLevel) {
             event.getPlayer().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);
             event.getPlayer().playSound(event.getPlayer().getLocation(), "entity.player.levelup", 1, 1);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    corePlayer.updateNameTag();
+                }
+            }.runTaskLater(Core.getInstance(), 2);
         }
     }
 
@@ -91,6 +100,12 @@ class ExperienceListener implements Listener {
         if (newLevel > prevLevel) {
             event.getPlayer().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);
             event.getPlayer().playSound(event.getPlayer().getLocation(), "entity.player.levelup", 1, 1);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    corePlayer.updateNameTag();
+                }
+            }.runTaskLater(Core.getInstance(), 2);
         }
     }
 
@@ -120,6 +135,12 @@ class ExperienceListener implements Listener {
         if (newLevel > prevLevel) {
             event.getEntity().getKiller().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);
             event.getEntity().getKiller().playSound(event.getEntity().getKiller().getLocation(), "entity.player.levelup", 1, 1);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    corePlayer.updateNameTag();
+                }
+            }.runTaskLater(Core.getInstance(), 2);
         }
     }
 
@@ -135,6 +156,12 @@ class ExperienceListener implements Listener {
         if (newLevel > prevLevel) {
             event.getPlayer().sendMessage("レベルが上がりました！ 現在のレベル: " + newLevel);
             event.getPlayer().playSound(event.getPlayer().getLocation(), "entity.player.levelup", 1, 1);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    corePlayer.updateNameTag();
+                }
+            }.runTaskLater(Core.getInstance(), 2);
         }
     }
 }

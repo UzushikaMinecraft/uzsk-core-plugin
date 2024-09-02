@@ -44,5 +44,27 @@ sidebar:
     world_time: HH:mm
   exp_progress_bar_size: 50
 
+nametag:
+  enabled: true
+
+role:
+  roles:
+    - name: Owner
+      weight: 2
+      permission: "uzsk.role.owner"
+      prefix: "&4[Owner]&r"
+      suffix: ""
+    - name: Staff
+      weight: 1
+      permission: "uzsk.role.staff"
+      prefix: "&c[Staff]&r"
+      suffix: ""
+    - name: Player
+      weight: 0
+      permission: "uzsk.role.player"
+      prefix: "&a[Player]&r"
+      suffix: ""
+  default: "Player"
+
 webapi:
   endpoint_url: http://uszk_webapi:8080/api/

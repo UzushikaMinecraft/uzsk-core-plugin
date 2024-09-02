@@ -1,6 +1,5 @@
 package net.iamtakagi.uzsk.core;
 
-import org.apache.maven.model.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,6 +23,11 @@ public class Core extends JavaPlugin {
     this.saveDefaultConfig();
     this.loadConfig();
     this.config = new CoreConfig((YamlConfiguration) this.getConfig());
+    if (config.getNametagSettings().isEnabled() && !getServer().getPluginManager().isPluginEnabled("NametagEdit")) {
+      getLogger().severe("NametagEdit is not enabled or installed, Disabling...");
+      getServer().getPluginManager().disablePlugin(this);
+      return;
+    }
     this.database = new Database(
       this.config.getDatabaseSettings().getHost(),
       this.config.getDatabaseSettings().getPort(),
