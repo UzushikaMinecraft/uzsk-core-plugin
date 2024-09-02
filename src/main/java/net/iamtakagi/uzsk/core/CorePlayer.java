@@ -53,20 +53,20 @@ public class CorePlayer {
         List<Role> roles = Core.getInstance().getCoreConfig().getRoleSettings().getRoles();
         for (Role role : roles) {
             if (getBukkitPlayer().hasPermission(role.getPermission())) {
-                return Style.AQUA + "[Lv." + profile.getExperience().getCurrentLevel() + "] " + role.getPrefix();
+                return role.getPrefix();
             }
         };
-        return Style.AQUA + "[Lv." + profile.getExperience().getCurrentLevel() + "] " + Core.getInstance().getCoreConfig().getRoleSettings().getDefaultRole().getPrefix();
+        return Core.getInstance().getCoreConfig().getRoleSettings().getDefaultRole().getPrefix();
     }
 
     public String getSuffix () {
         List<Role> roles = Core.getInstance().getCoreConfig().getRoleSettings().getRoles();
         for (Role role : roles) {
             if (getBukkitPlayer().hasPermission(role.getPermission())) {
-                return role.getSuffix();
+                return role.getSuffix() + Style.AQUA + "[Lv." + profile.getExperience().getCurrentLevel() + "]";
             }
         };
-        return Core.getInstance().getCoreConfig().getRoleSettings().getDefaultRole().getSuffix();
+        return Core.getInstance().getCoreConfig().getRoleSettings().getDefaultRole().getSuffix() + Style.AQUA + "[Lv." + profile.getExperience().getCurrentLevel() + "]";
     }
 
     public void updateNameTag () {
