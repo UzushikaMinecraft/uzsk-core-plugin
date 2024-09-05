@@ -1,0 +1,6 @@
+mysql:
+  host: uzsk_db
+  port: 3306
+  database: uzsk
+  username: root
+  password: uzsk

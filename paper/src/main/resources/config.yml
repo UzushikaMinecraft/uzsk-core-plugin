@@ -1,0 +1,70 @@
+mysql:
+  host: dev_db
+  port: 3306
+  database: uzsk
+  username: root
+  password: uzsk
+
+experience:
+  # ネットワーク最終ログインから1日以上経っていたら
+  on_login_network:
+    increments: 50.0
+  # ブロックを破壊したとき
+  on_break_block: 
+    increments: 5.0
+  # ブロックを設置したとき
+  on_place_block:
+    increments: 5.0
+  # モブを倒したとき
+  on_kill_mob:
+    increments: 5.0
+  # チャットを送信したとき
+  on_chat:
+    increments: 3.0
+
+sidebar:
+  enabled: true
+  title: "&dウズシカさーばー"
+  lines:
+    - "Lv.{LEVEL} ({EXP_PERCENTAGE}%)"
+    - "{EXP_PROGRESS_BAR}"
+    - "&rServer: dev"
+    - "&r接続数: {ONLINE_PLAYERS}"
+    - "&r{PING}ms"
+    - "&r{WORLD}"
+    - "&r{WORLD_TIME} ({WEATHER})"
+    - "&r{X}, {Y}, {Z} ({DIRECTION})"
+    - "&r{TPS}TPS"
+    - "&r{USAGE_RAM} / {TOTAL_RAM} MB"
+    - "&7{DATE} {TIME}"
+  pattern:
+    date: YY/MM/dd
+    time: HH:mm:ss
+    world_date: MM/dd
+    world_time: HH:mm
+  exp_progress_bar_size: 50
+
+nametag:
+  enabled: true
+
+role:
+  roles:
+    - name: Owner
+      weight: 2
+      permission: "uzsk.role.owner"
+      prefix: "&4[Owner]&r"
+      suffix: ""
+    - name: Staff
+      weight: 1
+      permission: "uzsk.role.staff"
+      prefix: "&c[Staff]&r"
+      suffix: ""
+    - name: Player
+      weight: 0
+      permission: "uzsk.role.player"
+      prefix: "&a[Player]&r"
+      suffix: ""
+  default: "Player"
+
+webapi:
+  endpoint_url: http://uszk_webapi:8080/api/
