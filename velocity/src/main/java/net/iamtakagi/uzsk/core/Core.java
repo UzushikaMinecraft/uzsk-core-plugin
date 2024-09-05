@@ -1,42 +1,45 @@
 package net.iamtakagi.uzsk.core;
 
 import com.google.inject.Inject;
+import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.LoginEvent;
+import com.velocitypowered.api.event.player.ServerPreConnectEvent;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.Channel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
+import org.geysermc.api.connection.Connection;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.geysermc.floodgate.api.player.FloodgatePlayer;
 import org.geysermc.geyser.api.GeyserApi;
+import org.geysermc.geyser.api.connection.GeyserConnection;
+import org.geysermc.geyser.api.event.EventRegistrar;
+import org.geysermc.geyser.api.event.bedrock.SessionJoinEvent;
 import org.slf4j.Logger;
-import org.spongepowered.configurate.CommentedConfigurationNode;
-import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
-@Plugin(id = "core", name = "UZSK Core Plugin", version = "1.0.0-SNAPSHOT", url = "https://uzsk.iamtakagi.net", description = "UZSK Core Plugin", authors = {
-        "iamtakagi" })
-public class Core {
+@Plugin(id = "core", name = "Core", version = "1.0.0-SNAPSHOT", url = "https://uzsk.iamtakagi.net", description = "UZSK Core Plugin", authors = {
+        "iamtakagi" }, dependencies = {
+                @Dependency(id = "geyser", optional = false),
+                @Dependency(id = "floodgate", optional = false)
+        })
+public class Core implements EventRegistrar {
 
     private final ProxyServer server;
     private final Logger logger;
-
-    private GeyserApi geyserApi;
-    private FloodgateApi floodgateApi;
     private Database database;
-
-    @Inject
-    @DataDirectory
-    private Path dataDirectory;
-    private CoreConfig config;
 
     @Inject
     public Core(ProxyServer server, Logger logger) {
@@ -44,69 +47,45 @@ public class Core {
         this.logger = logger;
     }
 
-    public void loadConfig() throws IOException {
-        if (Files.notExists(dataDirectory)) {
-            try {
-                Files.createDirectory(dataDirectory);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        final Path config = dataDirectory.resolve("config.yml");
-        if (Files.notExists(config)) {
-            try (InputStream stream = this.getClass().getClassLoader().getResourceAsStream("config.yml")) {
-                try {
-                    Files.copy(stream, config);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        final YamlConfigurationLoader loader = YamlConfigurationLoader.builder().path(config).build();
-        final CommentedConfigurationNode node = loader.load();
-        this.config = new CoreConfig(node);
-    }
-
     @Subscribe
-    public void onInitialize(ProxyInitializeEvent event)  {
-        try {
-            loadConfig();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.database = new Database(config.getDatabaseSettings().getHost(), config.getDatabaseSettings().getPort(),
-                            config.getDatabaseSettings().getUsername(), config.getDatabaseSettings().getPassword(),
-                            config.getDatabaseSettings().getDatabase());
-        this.geyserApi = GeyserApi.api();
-        this.floodgateApi = FloodgateApi.getInstance();
-        server.getEventManager().register(this, new Listener(geyserApi, floodgateApi, database));
-
+    public void onProxyInitialization(ProxyInitializeEvent event) {
+        this.database = new Database("uzsk_db", "3306", "root", "uzsk", "uzsk");
+        GeyserApi.api().eventBus().register(this, this);
+        GeyserApi.api().eventBus().subscribe(this, SessionJoinEvent.class, this::onJoin);
         this.logger.info("Core has been initialized!");
     }
-}
-
-class Listener {
-    private final GeyserApi geyserApi;
-    private final FloodgateApi floodgateApi;
-    private final Database database;
-
-    public Listener(GeyserApi geyserApi, FloodgateApi floodgateApi, Database database) {
-        this.geyserApi = geyserApi;
-        this.floodgateApi = floodgateApi;
-        this.database = database;
-    }
 
     @Subscribe
-    public void onLogin(LoginEvent event) {
-        if (geyserApi.isBedrockPlayer(event.getPlayer().getUniqueId())) {
-            FloodgatePlayer floodgatePlayer = floodgateApi.getPlayer(event.getPlayer().getUniqueId());
+    public void onJoin(SessionJoinEvent event) {
+        GeyserConnection connection = event.connection();
+        if (connection == null) {
+            return;
+        }
+        UUID uuid = connection.playerUuid();
+        if (uuid == null) {
+            return;
+        }
+        if (GeyserApi.api().isBedrockPlayer(uuid)) {
+            FloodgatePlayer floodgatePlayer = FloodgateApi.getInstance().getPlayer(uuid);
             if (floodgatePlayer == null) {
                 return;
             }
-            String fuid = floodgatePlayer.getCorrectUniqueId().toString();
+            String fuid = uuid.toString();
+            String checkExistsSql = "SELECT * FROM bedrock WHERE fuid = ?";
+            try (PreparedStatement preparedStmt = this.database.getConnection().prepareStatement(checkExistsSql)) {
+                preparedStmt.setString(1, fuid);
+                ResultSet rs = preparedStmt.executeQuery();
+                if (rs != null && rs.next()) {
+                    preparedStmt.close();
+                    return;
+                }
+                preparedStmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             String xuid = floodgatePlayer.getXuid();
-            String insertSql = "INSERT INTO bedrock (fuid, xuid) VALUES (?, ?) where not exists (select 1 from bedrock where fuid = ?)"; 
-            try (PreparedStatement preparedStmt = database.getConnection().prepareStatement(insertSql)) {
+            String insertSql = "INSERT INTO bedrock (fuid, xuid) VALUES (?, ?)";
+            try (PreparedStatement preparedStmt = this.database.getConnection().prepareStatement(insertSql)) {
                 preparedStmt.setString(1, fuid);
                 preparedStmt.setString(2, xuid);
                 preparedStmt.execute();
@@ -114,54 +93,6 @@ class Listener {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
-    }
-}
-
-class CoreConfig {
-    private DatabaseSettings databaseSettings;
-
-    public CoreConfig(CommentedConfigurationNode node) {
-        this.databaseSettings = new DatabaseSettings(node);
-    }
-
-    public DatabaseSettings getDatabaseSettings() {
-        return databaseSettings;
-    }
-
-    public class DatabaseSettings {
-        private String host;
-        private String port;
-        private String database;
-        private String username;
-        private String password;
-
-        public DatabaseSettings(CommentedConfigurationNode node) {
-            this.host = node.getString("mysql.host");
-            this.port = node.getString("mysql.port");
-            this.database = node.getString("mysql.database");
-            this.username = node.getString("mysql.username");
-            this.password = node.getString("mysql.password");
-        }
-
-        public String getHost() {
-            return host;
-        }
-
-        public String getPort() {
-            return port;
-        }
-
-        public String getDatabase() {
-            return database;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public String getPassword() {
-            return password;
         }
     }
 }
