@@ -103,10 +103,12 @@ class Listener {
             if (floodgatePlayer == null) {
                 return;
             }
-            String sql = "INSERT INTO bedrock (fuid, xuid) VALUES (?, ?)";
-            try (PreparedStatement preparedStmt = database.getConnection().prepareStatement(sql)) {
-                preparedStmt.setString(1, event.getPlayer().getUniqueId().toString());
-                preparedStmt.setString(2, floodgatePlayer.getXuid());
+            String fuid = floodgatePlayer.getCorrectUniqueId().toString();
+            String xuid = floodgatePlayer.getXuid();
+            String insertSql = "INSERT INTO bedrock (fuid, xuid) VALUES (?, ?) where not exists (select 1 from bedrock where fuid = ?)"; 
+            try (PreparedStatement preparedStmt = database.getConnection().prepareStatement(insertSql)) {
+                preparedStmt.setString(1, fuid);
+                preparedStmt.setString(2, xuid);
                 preparedStmt.execute();
                 preparedStmt.close();
             } catch (SQLException e) {
