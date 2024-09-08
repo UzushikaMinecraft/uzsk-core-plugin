@@ -18,7 +18,7 @@ public class Database {
     private Connection connection;
 
     public Database(String host, String port, String user, String password, String database) {
-       this.url = "jdbc:mysql://" + host + ":" + port + "/" + database;
+       this.url = "jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true&useSSL=false";
        this.user = user;
        this.password = password;
     }
