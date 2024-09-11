@@ -37,7 +37,7 @@ public class CorePlayer {
     public void init () {
         if (Core.getInstance().getCoreConfig().getSidebarSettings().isEnabled()) {
             this.sidebar = new CoreSidebar(this);
-            this.sidebar.setup();
+            this.sidebar.init();
         }
         this.profile = Core.getInstance().getProfileDao().findByUUID(uuid);
         new BukkitRunnable() {

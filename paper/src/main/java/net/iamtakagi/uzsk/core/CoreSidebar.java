@@ -46,7 +46,16 @@ public class CoreSidebar {
       this.tickTask = Bukkit.getScheduler().runTaskTimer(Core.getInstance(), this::tick, 0, 20);
     }
 
+    public void destroy() {
+      this.sidebar.removePlayer(player.getBukkitPlayer());
+      this.tickTask.cancel();
+    }
+
     private void tick() {
+      if(player == null || player.getBukkitPlayer() == null || !player.getBukkitPlayer().isOnline()) {
+        destroy();
+        return;
+      }
       SidebarComponent.Builder builder = SidebarComponent.builder();
       SidebarComponent title = SidebarComponent.staticLine(
           Component.text(ChatColor.translateAlternateColorCodes('&', Core.getInstance().getCoreConfig().getSidebarSettings().getTitle())));

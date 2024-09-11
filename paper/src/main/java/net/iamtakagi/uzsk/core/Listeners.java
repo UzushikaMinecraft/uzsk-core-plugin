@@ -55,6 +55,7 @@ class GeneralListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         if(CorePlayer.getCorePlayers().containsKey(event.getPlayer().getUniqueId())) {
             CorePlayer corePlayer = CorePlayer.getCorePlayer(event.getPlayer().getUniqueId());
+            corePlayer.getSidebar().destroy();
             Profile profile = corePlayer.getProfile();
             profile.setTotalPlayTime(profile.getTotalPlayTime() + (System.currentTimeMillis() - profile.getLastLoginDate()));
             corePlayer.saveProfile();
